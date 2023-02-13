@@ -1,32 +1,31 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   ft_putendl_fd.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: albagarc <albagarc@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/02/09 15:39:28 by albagarc          #+#    #+#             */
-/*   Updated: 2023/02/13 22:10:51 by albagarc         ###   ########.fr       */
+/*   Created: 2022/05/31 20:56:12 by albagarc          #+#    #+#             */
+/*   Updated: 2023/02/13 22:05:33 by albagarc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <sys/time.h>
-#include <stdio.h>
-/*#include "../inc/utils.h"*/
-#include "../inc/errors.h"
-int main(int argc, char **argv)
+#include <unistd.h>
+
+void    ft_putchar_fd(char c, int fd)
 {
-//	struct timeval t;
-//	gettimeofday(&t, NULL);
-//	printf("seconds : %ld\n", t.tv_sec);
-	printf("argc=%d", argc);
-	if(argc == 5 || argc == 6)
-	{
-		error_control(argv);
-	}
-	else
-	{
-		terminate(ERR_NARG);
-	}
+        write(fd, &c, 1);
 }
 
+void	ft_putendl_fd(char *s, int fd)
+{
+	int	i;
+
+	i = 0;
+	while (s[i] != '\0')
+	{
+		ft_putchar_fd(s[i], fd);
+		i++;
+	}
+	write(fd, "\n", 1);
+}
