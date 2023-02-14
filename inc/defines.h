@@ -6,7 +6,7 @@
 /*   By: albagarc <albagarc@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/13 21:29:43 by albagarc          #+#    #+#             */
-/*   Updated: 2023/02/13 22:44:13 by albagarc         ###   ########.fr       */
+/*   Updated: 2023/02/14 16:42:05 by albagarc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,7 @@ typedef struct s_house{
 	int	time_to_eat;
 	int	time_to_sleep;
 	int	nphilos;
+	int	forks;
 	int	times_should_eat;
 }	t_house;
 
