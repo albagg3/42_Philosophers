@@ -6,7 +6,7 @@
 /*   By: albagarc <albagarc@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/09 15:39:28 by albagarc          #+#    #+#             */
-/*   Updated: 2023/02/14 16:41:57 by albagarc         ###   ########.fr       */
+/*   Updated: 2023/02/14 17:18:43 by albagarc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,18 +49,28 @@ void	init_house(int argc, char **argv, t_house *house)
 //crear los threads 1 por filosofo y crear las routinas y las condiciones.	
 }
 
-/*void	*routine_eat(t_house *house, )
+void	*routine_pick_forks()
+	
+void	*routine_eat()
 {
-	printf("philo[%d]", house->);
-}*/
 
-/*void	create_threads(t_house *house)
+	printf("philo[%d]");
+}
+
+int	create_threads(t_house *house)
 {
-	pthread_t th1;
+	pthread_t th[house->nphilos];
+	int i;
 
-	while (i < )
+	i = 0;
+	while (i < house->nphilos)
+	{
+		if(pthread_create(&th[i], NULL, &routine_pick_forks, NULL) != 0)
+			return(1);
+		i++;
+	}
 
-}*/
+}
 
 int main(int argc, char **argv)
 {
