@@ -6,9 +6,11 @@
 /*   By: albagarc <albagarc@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/13 21:29:43 by albagarc          #+#    #+#             */
-/*   Updated: 2023/02/14 17:18:47 by albagarc         ###   ########.fr       */
+/*   Updated: 2023/02/15 12:55:07 by albagarc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
+
+#include <pthread.h>
 
 #ifndef DEFINES_H
 # define DEFINES_H
@@ -27,6 +29,7 @@ typedef struct s_house{
 	int	nphilos;
 	int	forks;
 	int	times_should_eat;
+	pthread_mutex_t mutex;
 }	t_house;
 
 #endif
