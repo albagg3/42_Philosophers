@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   defines.h                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: albagarc <albagarc@student.42barcel>       +#+  +:+       +#+        */
+/*   By: albagarc <albagarc@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/13 21:29:43 by albagarc          #+#    #+#             */
-/*   Updated: 2023/02/15 12:55:07 by albagarc         ###   ########.fr       */
+/*   Updated: 2023/02/17 12:12:34 by albagarc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ typedef struct s_house{
 	int	nphilos;
 	int	forks;
 	int	times_should_eat;
-	pthread_mutex_t mutex;
+	pthread_mutex_t *forks;
 }	t_house;
 
 #endif
