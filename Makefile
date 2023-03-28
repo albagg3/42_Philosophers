@@ -7,7 +7,7 @@ SRC_DIR = src/
 
 #FSANITIZE	:= -fsanitize=address -g3
 
-SRC_FILES	= main errors ft_putendl_fd ft_atoi
+SRC_FILES	= main errors utils_libft
 
 SRC 		= 	$(addprefix $(SRC_DIR), $(addsuffix .c, $(SRC_FILES)))
 OBJ 		= 	$(addprefix $(OBJ_DIR), $(addsuffix .o, $(SRC_FILES)))

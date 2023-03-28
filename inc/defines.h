@@ -19,17 +19,19 @@ typedef struct s_philo{
 	int	num;
 	int	left_fork;
 	int	right_fork;
+	long long last_eat;
+	int times_eat;
 }	t_philo;
 
 typedef struct s_house{
 	t_philo *philos;
+	int	nphilos;
 	int	time_to_die;
 	int	time_to_eat;
 	int	time_to_sleep;
-	int	nphilos;
-	int	forks;
 	int	times_should_eat;
-	pthread_mutex_t *forks;
+	pthread_mutex_t food;
+	pthread_mutex_t print_sth;
 }	t_house;
 
 #endif

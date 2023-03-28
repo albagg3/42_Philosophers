@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: albagarc <albagarc@student.42.fr>          +#+  +:+       +#+        */
+/*   By: codespace <codespace@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/09 15:39:28 by albagarc          #+#    #+#             */
-/*   Updated: 2023/02/17 11:40:36 by albagarc         ###   ########.fr       */
+/*   Updated: 2023/03/28 13:45:26 by codespace        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,16 +28,15 @@ void	init_house(int argc, char **argv, t_house *house)
 	house->time_to_die = ft_atoi(argv[2]);
 	house->time_to_eat = ft_atoi(argv[3]);
 	house->time_to_sleep = ft_atoi(argv[4]);
-	house->forks = ft_atoi(argv[1]);
 	if(argc == 6)
 		house->times_should_eat = ft_atoi(argv[5]);
 	i = 0;
 	n = 1;
-	while(i < house->forks)
+	while(i < house->nphilos)
 	{
 		house->philos[i].num = n;
 		house->philos[i].left_fork = n;
-		if (i == house->forks - 1)
+		if (i == house->nphilos - 1)
 			house->philos[i].right_fork = 1;
 		else
 			house->philos[i].right_fork = n + 1;
@@ -51,7 +50,7 @@ void	init_house(int argc, char **argv, t_house *house)
 //crear los threads 1 por filosofo y crear las routinas y las condiciones.	
 }
 
-void	*routine_pick_forks(void *arg)
+void	*start_living(void *arg)
 {
 	int i = *(int*)arg;
 	
@@ -67,11 +66,11 @@ int	create_threads(t_house *house)
 	th = malloc(sizeof(t_philo) * house->nphilos);
 	if(!th)
 		return(1);
-	pthread_mutex_init(&house->mutex, NULL);
+	// pthread_mutex_init(&house->mutex, NULL);
 	i = 1;
 	while (i <= house->nphilos)
 	{
-		if(pthread_create(&th[i], NULL, &routine_pick_forks, &i) != 0)
+		if(pthread_create(&th[i], NULL, &start_living, &house->philos[i]) != 0)
 			return (1);
 		i++;
 	}
@@ -81,7 +80,7 @@ int	create_threads(t_house *house)
 		if(pthread_join(th[i], NULL) != 0)
 			return (1);
 	}
-	pthread_mutex_destroy(&house->mutex);
+	// pthread_mutex_destroy(&house->mutex);
 	return(0);
 }
 
