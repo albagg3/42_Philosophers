@@ -6,11 +6,11 @@
 /*   By: codespace <codespace@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/09 15:39:28 by albagarc          #+#    #+#             */
-/*   Updated: 2023/03/28 13:45:26 by codespace        ###   ########.fr       */
+/*   Updated: 2023/03/28 15:15:39 by codespace        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <sys/time.h>
+
 #include <stdio.h>
 #include <stdlib.h>
 #include "../inc/utils.h"
@@ -22,7 +22,6 @@
 void	init_house(int argc, char **argv, t_house *house)
 {
 	int i;
-	int n;
 
 	house->nphilos = ft_atoi(argv[1]);
 	house->time_to_die = ft_atoi(argv[2]);
@@ -31,19 +30,17 @@ void	init_house(int argc, char **argv, t_house *house)
 	if(argc == 6)
 		house->times_should_eat = ft_atoi(argv[5]);
 	i = 0;
-	n = 1;
 	while(i < house->nphilos)
 	{
-		house->philos[i].num = n;
-		house->philos[i].left_fork = n;
+		house->philos[i].num = i + 1;
+		house->philos[i].left_fork_indx = i;
 		if (i == house->nphilos - 1)
-			house->philos[i].right_fork = 1;
+			house->philos[i].right_fork_indx = 0;
 		else
-			house->philos[i].right_fork = n + 1;
+			house->philos[i].right_fork_indx = i + 1;
 		i++;
-		n++;
 	}
-
+	
 //rellenar la structura con el numero de filosofos y 
 //decirle a cada filosofo cual es su tenedor, meter el resto de argumentos 
 //en las variables de la estructura. 
@@ -52,13 +49,15 @@ void	init_house(int argc, char **argv, t_house *house)
 
 void	*start_living(void *arg)
 {
-	int i = *(int*)arg;
+	t_philo	*philo;
 	
-	printf("philo[%d] ha cogido un tenedor\n", i + 1);
+	philo = (t_philo*)arg;
+	(void)philo;
+	// printf("philo[%d] ha cogido un tenedor\n", i + 1);
 	return(0);
 }
 
-int	create_threads(t_house *house)
+int	create_philos(t_house *house)
 {
 	pthread_t *th;
 	int i;
@@ -67,15 +66,15 @@ int	create_threads(t_house *house)
 	if(!th)
 		return(1);
 	// pthread_mutex_init(&house->mutex, NULL);
-	i = 1;
-	while (i <= house->nphilos)
+	i = 0;
+	while (i < house->nphilos)
 	{
-		if(pthread_create(&th[i], NULL, &start_living, &house->philos[i]) != 0)
+		if(pthread_create(&th[i], NULL, start_living, &house->philos[i]) != 0)
 			return (1);
 		i++;
 	}
-	i = 1;
-	while (i <= house->nphilos)
+	i = 0;
+	while (i < house->nphilos)
 	{
 		if(pthread_join(th[i], NULL) != 0)
 			return (1);
@@ -86,17 +85,17 @@ int	create_threads(t_house *house)
 
 int main(int argc, char **argv)
 {
-//	struct timeval t;
-//	gettimeofday(&t, NULL);
-//	printf("seconds : %ld\n", t.tv_sec);
-	t_house	house;
 
+	t_house	house;
+	long long time;
 	if(argc == 5 || argc == 6)
 	{
 		error_control(argv);
 		house.philos = malloc(sizeof(t_philo) * ft_atoi(argv[1]));
 		init_house(argc, argv, &house);
-		create_threads(&house);
+		create_philos(&house);
+		time = gettime();
+		printf("time is:%lld",time);
 //		printf("variable  house: nphilos %d\n, time_to_die %d\n, time_to_eat %d\n time_to_sleep %d\n.", house.nphilos, house.time_to_die, house.time_to_eat, house.time_to_sleep);
 //		printf(" philo 3:\nnumber=%d\nfork_left_%d\nfork_right_%d\n", house.philos[3].num, house.philos[3].left_fork, house.philos[3].right_fork);
 	}

@@ -1,20 +1,23 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   utils.h                                            :+:      :+:    :+:   */
+/*   utils.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: codespace <codespace@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/02/13 21:55:17 by albagarc          #+#    #+#             */
-/*   Updated: 2023/03/28 15:13:27 by codespace        ###   ########.fr       */
+/*   Created: 2023/03/28 15:05:35 by codespace         #+#    #+#             */
+/*   Updated: 2023/03/28 15:11:51 by codespace        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef UTILS_H
-# define UTILS_H
+#include <sys/time.h>
+#include <stdio.h>
 
-int	ft_atoi(const char *str);
-void	ft_putendl_fd(char *s, int fd);
-long long   gettime();
-
-#endif
+long long gettime()
+{
+    struct timeval  tv;
+    long long milisec;
+    gettimeofday(&tv, NULL);
+    milisec = tv.tv_sec * 1000 + tv.tv_usec * 1000;
+    return milisec;
+}

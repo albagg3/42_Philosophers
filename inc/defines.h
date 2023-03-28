@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   defines.h                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: albagarc <albagarc@student.42.fr>          +#+  +:+       +#+        */
+/*   By: codespace <codespace@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/13 21:29:43 by albagarc          #+#    #+#             */
-/*   Updated: 2023/02/17 12:12:34 by albagarc         ###   ########.fr       */
+/*   Updated: 2023/03/28 15:18:13 by codespace        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,10 +17,12 @@
 
 typedef struct s_philo{
 	int	num;
-	int	left_fork;
-	int	right_fork;
+	int	left_fork_indx;
+	int	right_fork_indx;
 	long long last_eat;
 	int times_eat;
+	pthread_mutex_t fork;
+	struct s_house	*house;
 }	t_philo;
 
 typedef struct s_house{
@@ -30,8 +32,14 @@ typedef struct s_house{
 	int	time_to_eat;
 	int	time_to_sleep;
 	int	times_should_eat;
-	pthread_mutex_t food;
 	pthread_mutex_t print_sth;
 }	t_house;
+
+enum{
+	EAT,
+	THINK,
+	SLEEP,
+	DIE
+};
 
 #endif
