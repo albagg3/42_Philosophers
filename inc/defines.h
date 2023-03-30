@@ -6,7 +6,7 @@
 /*   By: codespace <codespace@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/13 21:29:43 by albagarc          #+#    #+#             */
-/*   Updated: 2023/03/28 15:18:13 by codespace        ###   ########.fr       */
+/*   Updated: 2023/03/30 20:11:15 by codespace        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,10 +32,13 @@ typedef struct s_house{
 	int	time_to_eat;
 	int	time_to_sleep;
 	int	times_should_eat;
+	long long start_time;
 	pthread_mutex_t print_sth;
 }	t_house;
 
-enum{
+enum action
+{
+	FORK,
 	EAT,
 	THINK,
 	SLEEP,
