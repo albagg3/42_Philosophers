@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   philos_live.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: albagarc <albagarc@student.42.fr>          +#+  +:+       +#+        */
+/*   By: codespace <codespace@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/31 11:53:53 by albagarc          #+#    #+#             */
-/*   Updated: 2023/03/31 14:54:13 by albagarc         ###   ########.fr       */
+/*   Updated: 2023/03/31 19:08:19 by codespace        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,12 +19,26 @@
 
 void    philo_sleep(t_philo *philo)
 {
-    print_info(philo,THINK);
+    print_info(philo,SLEEP);
     usleep(philo->house->time_to_sleep);
+}
+
+int is_dead(t_philo *philo)
+{
+	long long current;
+	current = gettime();
+	if (passed_time(current, philo->last_eat) > philo->house->time_to_die)
+	{
+		print_info(philo, DIE);
+		return (1);
+	}
+	return (0);
 }
 
 void    philo_eat(t_philo *philo)
 {
+	// if(is_dead(philo))
+	// 	return;
     pthread_mutex_init(&philo->fork, NULL);
     pthread_mutex_lock(&philo->house->philos[philo->left_fork_indx].fork);
     print_info(philo, FORK);
@@ -47,7 +61,11 @@ void	*start_living(void *arg)
 	while(philo->house->is_alive)
     {
         philo_eat(philo);
+		
         philo_sleep(philo);
+		
+		print_info(philo, THINK);
+		
 	
     }
 	return(0);

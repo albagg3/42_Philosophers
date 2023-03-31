@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: albagarc <albagarc@student.42.fr>          +#+  +:+       +#+        */
+/*   By: codespace <codespace@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/09 15:39:28 by albagarc          #+#    #+#             */
-/*   Updated: 2023/03/31 14:21:30 by albagarc         ###   ########.fr       */
+/*   Updated: 2023/03/31 18:32:10 by codespace        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,6 +73,24 @@ void	is_anyone_dead(t_house *house)
 	}
 }
 
+void	already_finish_eating(t_house *house)
+{
+	int i;
+
+	i = 0;
+	while (i < house->nphilos)
+	{
+		if (house->times_should_eat == house->philos[i].times_ate)
+		{
+			i++;
+			if (i == house->nphilos - 1)
+				break;
+		}
+		else
+			i = 0;
+	}
+}
+
 int main(int argc, char **argv)
 {
 
@@ -86,6 +104,8 @@ int main(int argc, char **argv)
 		create_philos(&house);
 // while infinito de comprobacion de si han muerto los filosofos en el momento en el que uno muere cortar todos los hilos
 		is_anyone_dead(&house);
+		if(argc == 6)
+			already_finish_eating(&house);
 	}
 	else
 	{

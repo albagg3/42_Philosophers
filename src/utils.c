@@ -6,13 +6,14 @@
 /*   By: codespace <codespace@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/28 15:05:35 by codespace         #+#    #+#             */
-/*   Updated: 2023/03/31 11:44:41 by albagarc         ###   ########.fr       */
+/*   Updated: 2023/03/31 19:57:33 by codespace        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <sys/time.h>
 #include <stdio.h>
 #include "../inc/defines.h"
+#include <unistd.h>
 
 long long gettime()
 {
@@ -42,23 +43,24 @@ void    print_info(t_philo *philo, enum action ac)
     print_time = passed_time(current_time, philo->house->start_time);
     if(ac == FORK)
     {
-        printf("%lld philo[%d] has taken a fork\n", print_time, philo->num);
+        printf("\033[1;39m%06lld\033[0;39m \033[1;30mphilo[%d] \x1b[0;33mhas taken a fork\n", print_time, philo->num);
     }
     if(ac == EAT)
     {
-        printf("%lld philo[%d] is eating\n", print_time, philo->num);
+        printf("\033[1;39m%06lld\033[0;39m \033[1;30mphilo[%d] \033[0;38;5;208mis eating\n", print_time, philo->num);
     }
     if(ac == THINK)
     {
-        printf("%lld philo[%d] is thinking\n", print_time, philo->num);
+        printf("\033[1;39m%06lld\033[0;39m \033[1;30mphilo[%d] \033[0;96mis thinking\n", print_time, philo->num);
     }
     if(ac == SLEEP)
     {
-        printf("%lld philo[%d] is sleeping\n", print_time, philo->num);
+        printf("\033[1;39m%06lld\033[0;39m \033[1;30mphilo[%d] \033[0;38;5;225mis sleeping\n", print_time, philo->num);
     }
     if(ac == DIE)
     {
-        printf("%lld philo[%d] is dead\n", print_time, philo->num);
+        printf("\033[1;39m%06lld\033[0;39m \033[1;30mphilo[%d] \x1b[35mdied\n", print_time, philo->num);
+
     }
 	pthread_mutex_unlock(&philo->house->print_sth);
 }
