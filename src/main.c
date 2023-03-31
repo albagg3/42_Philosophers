@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: codespace <codespace@student.42.fr>        +#+  +:+       +#+        */
+/*   By: albagarc <albagarc@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/09 15:39:28 by albagarc          #+#    #+#             */
-/*   Updated: 2023/03/30 20:28:12 by codespace        ###   ########.fr       */
+/*   Updated: 2023/03/31 14:21:30 by albagarc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,10 @@
 #include "../inc/defines.h"
 #include <pthread.h>
 
+//rellenar la structura con el numero de filosofos y 
+//decirle a cada filosofo cual es su tenedor, meter el resto de argumentos 
+//en las variables de la estructura. 
+//crear los threads 1 por filosofo y crear las routinas y las condiciones.	
 
 void	init_house(int argc, char **argv, t_house *house)
 {
@@ -28,6 +32,7 @@ void	init_house(int argc, char **argv, t_house *house)
 	house->time_to_die = ft_atoi(argv[2]);
 	house->time_to_eat = ft_atoi(argv[3]);
 	house->time_to_sleep = ft_atoi(argv[4]);
+	house->is_alive = 1;
 	if(argc == 6)
 		house->times_should_eat = ft_atoi(argv[5]);
 	i = 0;
@@ -40,60 +45,32 @@ void	init_house(int argc, char **argv, t_house *house)
 		else
 			house->philos[i].right_fork_indx = i + 1;
 		house->philos[i].house = house;
+		house->philos[i].times_ate = 0;
 		i++;
 	}
-	
-	
-//rellenar la structura con el numero de filosofos y 
-//decirle a cada filosofo cual es su tenedor, meter el resto de argumentos 
-//en las variables de la estructura. 
-//crear los threads 1 por filosofo y crear las routinas y las condiciones.	
 }
 
-void	*start_living(void *arg)
+void	is_anyone_dead(t_house *house)
 {
-	t_philo	*philo;
-	
-	philo = (t_philo*)arg;
-	// (void)philo;
-	if(philo->num % 2 != 0)
-		usleep(1500);
-	
-	
-	// pthread_mutex_lock(&house->print_sth);
-	// printf("philo[%d] ha cogido un tenedor\n", philo->num);
-	// pthread_mutex_unlock(&house->print_sth);
-	print_info(philo, FORK);
-	
-	return(0);
-}
-
-int	create_philos(t_house *house)
-{
-	pthread_t *th;
+	long long current;
 	int i;
 
-	th = malloc(sizeof(t_philo) * house->nphilos);
-	if(!th)
-		return(1);
-	house->start_time = gettime();
 	i = 0;
-	pthread_mutex_init(&house->print_sth, NULL);
-	while (i < house->nphilos)
+	while(1)
 	{
-		if(pthread_create(&th[i], NULL, start_living, &house->philos[i]) != 0)
-			return (1);
-		i++;
+		while( i < house->nphilos)
+		{
+			current = gettime();
+			if(passed_time(current, house->philos[i].last_eat) > passed_time(current, house->time_to_die))
+			{
+				house->is_alive = 0;
+				break;
+			}
+			i++;
+		}
+		if(!house->is_alive)
+			break;
 	}
-	i = 0;
-	while (i < house->nphilos)
-	{
-		if(pthread_join(th[i], NULL) != 0)
-			return (1);
-	}
-	
-	pthread_mutex_destroy(&house->print_sth);
-	return(0);
 }
 
 int main(int argc, char **argv)
@@ -107,8 +84,8 @@ int main(int argc, char **argv)
 		house.philos = malloc(sizeof(t_philo) * ft_atoi(argv[1]));
 		init_house(argc, argv, &house);
 		create_philos(&house);
-//		printf("variable  house: nphilos %d\n, time_to_die %d\n, time_to_eat %d\n time_to_sleep %d\n.", house.nphilos, house.time_to_die, house.time_to_eat, house.time_to_sleep);
-//		printf(" philo 3:\nnumber=%d\nfork_left_%d\nfork_right_%d\n", house.philos[3].num, house.philos[3].left_fork, house.philos[3].right_fork);
+// while infinito de comprobacion de si han muerto los filosofos en el momento en el que uno muere cortar todos los hilos
+		is_anyone_dead(&house);
 	}
 	else
 	{
