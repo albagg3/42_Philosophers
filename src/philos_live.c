@@ -6,7 +6,7 @@
 /*   By: codespace <codespace@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/31 11:53:53 by albagarc          #+#    #+#             */
-/*   Updated: 2023/03/31 19:08:19 by codespace        ###   ########.fr       */
+/*   Updated: 2023/04/03 18:23:44 by codespace        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,34 +23,34 @@ void    philo_sleep(t_philo *philo)
     usleep(philo->house->time_to_sleep);
 }
 
-int is_dead(t_philo *philo)
-{
-	long long current;
-	current = gettime();
-	if (passed_time(current, philo->last_eat) > philo->house->time_to_die)
-	{
-		print_info(philo, DIE);
-		return (1);
-	}
-	return (0);
-}
+// int is_dead(t_philo *philo)
+// {
+// 	long long current;
+// 	current = gettime();
+// 	if (passed_time(current, philo->last_eat) >= philo->house->time_to_die)
+// 	{
+// 		print_info(philo, DIE);
+// 		return (1);
+// 	}
+// 	return (0);
+// }
 
 void    philo_eat(t_philo *philo)
 {
-	// if(is_dead(philo))
-	// 	return;
     pthread_mutex_init(&philo->fork, NULL);
     pthread_mutex_lock(&philo->house->philos[philo->left_fork_indx].fork);
     print_info(philo, FORK);
     pthread_mutex_lock(&philo->house->philos[philo->right_fork_indx].fork);
     print_info(philo, FORK);
+	philo->last_eat = gettime();
+    philo->times_ate++;
     print_info(philo, EAT);
     usleep(philo->house->time_to_eat);
     pthread_mutex_unlock(&philo->house->philos[philo->left_fork_indx].fork);
     pthread_mutex_unlock(&philo->house->philos[philo->right_fork_indx].fork);
     pthread_mutex_destroy(&philo->fork);
-    philo->times_ate++;
 }
+
 void	*start_living(void *arg)
 {
 	t_philo	*philo;
@@ -71,6 +71,53 @@ void	*start_living(void *arg)
 	return(0);
 }
 
+
+void	is_anyone_dead(t_house *house)
+{
+	long long current;
+	int i;
+
+	i = 0;
+	while(1)
+	{
+		while( i < house->nphilos)
+		{
+			current = gettime();
+			// printf("%lld number\n",passed_time(current, house->philos[i].last_eat) );
+			// printf("%lldcurrent,%lldlast\n ",current, house->philos[i].last_eat);
+			if(passed_time(current, house->philos[i].last_eat) > house->time_to_die)
+			{
+				print_info(house->philos, DIE);
+				house->is_alive = 0;
+				// exit(0);
+				break;
+			}
+			i++;
+		}
+		if(!house->is_alive)
+			break;
+	}
+}
+
+// void	already_finish_eating(t_house *house)
+// {
+// 	int i;
+
+// 	i = 0;
+// 	while (i < house->nphilos)
+// 	{
+		
+// 		if (house->times_should_eat == house->philos[i].times_ate)
+// 		{
+// 			i++;
+// 			if (i == house->nphilos - 1)
+// 				break;
+// 		}
+// 		else
+// 			i = 0;
+// 	}
+// }
+
 int	create_philos(t_house *house)
 {
 	pthread_t *th;
@@ -86,8 +133,12 @@ int	create_philos(t_house *house)
 	{
 		if(pthread_create(&th[i], NULL, start_living, &house->philos[i]) != 0)
 			return (1);
+		house->philos[i].last_eat = gettime();
 		i++;
 	}
+	is_anyone_dead(house);
+	// if(house->times_should_eat)
+	// 	already_finish_eating(house);
 	i = 0;
 	while (i < house->nphilos)
 	{

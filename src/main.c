@@ -6,7 +6,7 @@
 /*   By: codespace <codespace@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/09 15:39:28 by albagarc          #+#    #+#             */
-/*   Updated: 2023/03/31 18:32:10 by codespace        ###   ########.fr       */
+/*   Updated: 2023/04/03 18:23:41 by codespace        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,6 +38,7 @@ void	init_house(int argc, char **argv, t_house *house)
 	i = 0;
 	while(i < house->nphilos)
 	{
+		// pthread_mutex_init(&house->philos[i].fork, NULL);
 		house->philos[i].num = i + 1;
 		house->philos[i].left_fork_indx = i;
 		if (i == house->nphilos - 1)
@@ -46,50 +47,11 @@ void	init_house(int argc, char **argv, t_house *house)
 			house->philos[i].right_fork_indx = i + 1;
 		house->philos[i].house = house;
 		house->philos[i].times_ate = 0;
+		
 		i++;
 	}
 }
 
-void	is_anyone_dead(t_house *house)
-{
-	long long current;
-	int i;
-
-	i = 0;
-	while(1)
-	{
-		while( i < house->nphilos)
-		{
-			current = gettime();
-			if(passed_time(current, house->philos[i].last_eat) > passed_time(current, house->time_to_die))
-			{
-				house->is_alive = 0;
-				break;
-			}
-			i++;
-		}
-		if(!house->is_alive)
-			break;
-	}
-}
-
-void	already_finish_eating(t_house *house)
-{
-	int i;
-
-	i = 0;
-	while (i < house->nphilos)
-	{
-		if (house->times_should_eat == house->philos[i].times_ate)
-		{
-			i++;
-			if (i == house->nphilos - 1)
-				break;
-		}
-		else
-			i = 0;
-	}
-}
 
 int main(int argc, char **argv)
 {
@@ -103,9 +65,7 @@ int main(int argc, char **argv)
 		init_house(argc, argv, &house);
 		create_philos(&house);
 // while infinito de comprobacion de si han muerto los filosofos en el momento en el que uno muere cortar todos los hilos
-		is_anyone_dead(&house);
-		if(argc == 6)
-			already_finish_eating(&house);
+		// is_anyone_dead(&house);
 	}
 	else
 	{
