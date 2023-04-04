@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: codespace <codespace@student.42.fr>        +#+  +:+       +#+        */
+/*   By: albagarc <albagarc@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/09 15:39:28 by albagarc          #+#    #+#             */
-/*   Updated: 2023/04/03 18:23:41 by codespace        ###   ########.fr       */
+/*   Updated: 2023/04/04 18:21:50 by albagarc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,12 +33,13 @@ void	init_house(int argc, char **argv, t_house *house)
 	house->time_to_eat = ft_atoi(argv[3]);
 	house->time_to_sleep = ft_atoi(argv[4]);
 	house->is_alive = 1;
+	house->is_full = 0;
 	if(argc == 6)
 		house->times_should_eat = ft_atoi(argv[5]);
 	i = 0;
 	while(i < house->nphilos)
 	{
-		// pthread_mutex_init(&house->philos[i].fork, NULL);
+		
 		house->philos[i].num = i + 1;
 		house->philos[i].left_fork_indx = i;
 		if (i == house->nphilos - 1)
@@ -47,7 +48,7 @@ void	init_house(int argc, char **argv, t_house *house)
 			house->philos[i].right_fork_indx = i + 1;
 		house->philos[i].house = house;
 		house->philos[i].times_ate = 0;
-		
+		pthread_mutex_init(&house->philos[i].fork, NULL);
 		i++;
 	}
 }
@@ -64,12 +65,12 @@ int main(int argc, char **argv)
 		house.philos = malloc(sizeof(t_philo) * ft_atoi(argv[1]));
 		init_house(argc, argv, &house);
 		create_philos(&house);
-// while infinito de comprobacion de si han muerto los filosofos en el momento en el que uno muere cortar todos los hilos
-		// is_anyone_dead(&house);
+		ft_free_destroy(&house);
 	}
 	else
 	{
 		terminate(ERR_NARG);
 	}
+	system("leaks philo");
 }
 

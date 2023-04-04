@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: codespace <codespace@student.42.fr>        +#+  +:+       +#+        */
+/*   By: albagarc <albagarc@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/28 15:05:35 by codespace         #+#    #+#             */
-/*   Updated: 2023/03/31 19:57:33 by codespace        ###   ########.fr       */
+/*   Updated: 2023/04/04 18:31:34 by albagarc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,7 @@
 #include <stdio.h>
 #include "../inc/defines.h"
 #include <unistd.h>
+#include <stdlib.h>
 
 long long gettime()
 {
@@ -41,26 +42,59 @@ void    print_info(t_philo *philo, enum action ac)
     current_time = gettime();
     pthread_mutex_lock(&philo->house->print_sth);
     print_time = passed_time(current_time, philo->house->start_time);
-    if(ac == FORK)
+    if(philo->house->is_alive && !philo->house->is_full )
     {
-        printf("\033[1;39m%06lld\033[0;39m \033[1;30mphilo[%d] \x1b[0;33mhas taken a fork\n", print_time, philo->num);
-    }
-    if(ac == EAT)
-    {
-        printf("\033[1;39m%06lld\033[0;39m \033[1;30mphilo[%d] \033[0;38;5;208mis eating\n", print_time, philo->num);
-    }
-    if(ac == THINK)
-    {
-        printf("\033[1;39m%06lld\033[0;39m \033[1;30mphilo[%d] \033[0;96mis thinking\n", print_time, philo->num);
-    }
-    if(ac == SLEEP)
-    {
-        printf("\033[1;39m%06lld\033[0;39m \033[1;30mphilo[%d] \033[0;38;5;225mis sleeping\n", print_time, philo->num);
-    }
-    if(ac == DIE)
-    {
-        printf("\033[1;39m%06lld\033[0;39m \033[1;30mphilo[%d] \x1b[35mdied\n", print_time, philo->num);
+        if(ac == FORK)
+        {
+            printf("\033[1;39m%06lld\033[0;39m \033[1;30mphilo[%d] \x1b[0;33mhas taken a fork\n", print_time, philo->num);
+        }
+        if(ac == EAT)
+        {
+            printf("\033[1;39m%06lld\033[0;39m \033[1;30mphilo[%d] \033[0;38;5;208mis eating\n", print_time, philo->num);
+        }
+        if(ac == THINK)
+        {
+            printf("\033[1;39m%06lld\033[0;39m \033[1;30mphilo[%d] \033[0;96mis thinking\n", print_time, philo->num);
+        }
+        if(ac == SLEEP)
+        {
+            printf("\033[1;39m%06lld\033[0;39m \033[1;30mphilo[%d] \033[0;38;5;225mis sleeping\n", print_time, philo->num);
+        }
+        if(ac == DIE)
+        {
+            printf("\033[1;39m%06lld\033[0;39m \033[1;30mphilo[%d] \x1b[35mdied\n", print_time, philo->num);
 
+        }
     }
 	pthread_mutex_unlock(&philo->house->print_sth);
+    
+}
+
+void ft_usleep(long long time)
+{
+    long long current;
+    
+    current = gettime();
+    while(1)
+    {
+        if (passed_time(gettime(), current) >= time)
+            break;
+        usleep(100);
+    }
+}
+
+void ft_free_destroy(t_house *house)
+{
+    int i;
+
+    i = 0;
+    while(i < house->nphilos)
+    {
+        pthread_mutex_destroy(&house->philos[i].fork);
+        i++;
+    }
+    free(house->philos);
+    pthread_mutex_destroy(&house->print_sth);
+    pthread_mutex_destroy(&house->block_is_alive);
+    
 }

@@ -3,16 +3,17 @@
 /*                                                        :::      ::::::::   */
 /*   errors.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: albagarc <albagarc@student.42barcel>       +#+  +:+       +#+        */
+/*   By: albagarc <albagarc@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/13 21:39:53 by albagarc          #+#    #+#             */
-/*   Updated: 2023/02/13 22:25:18 by albagarc         ###   ########.fr       */
+/*   Updated: 2023/04/04 16:49:26 by albagarc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../inc/utils.h"
 #include "../inc/errors.h"
 #include <stdio.h>
+#include <stdlib.h>
 
 void	terminate(char *s)
 {
@@ -57,7 +58,7 @@ void	error_control(char **argv)
 		else
 		{
 			terminate(ERR_ARG);
-			return ;
+			exit(1);
 		}
 	}
 }
