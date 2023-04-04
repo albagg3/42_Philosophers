@@ -6,7 +6,7 @@
 /*   By: albagarc <albagarc@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/28 15:05:35 by codespace         #+#    #+#             */
-/*   Updated: 2023/04/04 18:31:34 by albagarc         ###   ########.fr       */
+/*   Updated: 2023/04/04 18:51:55 by albagarc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -96,5 +96,4 @@ void ft_free_destroy(t_house *house)
     free(house->philos);
     pthread_mutex_destroy(&house->print_sth);
     pthread_mutex_destroy(&house->block_is_alive);
-    
 }

@@ -6,7 +6,7 @@
 /*   By: albagarc <albagarc@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/31 11:53:53 by albagarc          #+#    #+#             */
-/*   Updated: 2023/04/04 18:29:18 by albagarc         ###   ########.fr       */
+/*   Updated: 2023/04/04 18:53:13 by albagarc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,6 @@ void    philo_sleep(t_philo *philo)
     print_info(philo,SLEEP);
     ft_usleep(philo->house->time_to_sleep);
 }
-
 
 void    philo_eat(t_philo *philo)
 {
@@ -61,10 +60,21 @@ void	*start_living(void *arg)
 	return(0);
 }
 
+int	finish_eating(t_house *house, int i)
+{
+	if (house->philos[i].times_ate >= house->times_should_eat)
+		{
+			if (i == house->nphilos - 1)
+			{
+				house->is_full = 1;
+				return (1);
+			}
+		}
+	return (0);
+}
 
 void	is_anyone_dead(t_house *house)
 {
-	long long current;
 	int i;
 
 	while(house->is_alive && !house->is_full)
@@ -72,10 +82,8 @@ void	is_anyone_dead(t_house *house)
 		i = 0;
 		while( i < house->nphilos)
 		{ 
-			// write(1, "a\n", 2);
-			current = gettime();
 			pthread_mutex_lock(&house->block_is_alive);
-			if(passed_time(current, house->philos[i].last_eat) >= house->time_to_die)
+			if(passed_time(gettime(), house->philos[i].last_eat) >= house->time_to_die)
 			{
 				print_info(house->philos, DIE);
 				house->is_alive = 0;
@@ -84,27 +92,15 @@ void	is_anyone_dead(t_house *house)
 			pthread_mutex_unlock(&house->block_is_alive);
 			i++;
 		}
-		i = 0;
-		while (house->times_should_eat && i < house->nphilos)
+		while (house->times_should_eat && i--)
 		{
-			// write(1, "b\n", 2);
-			if (house->philos[i].times_ate >= house->times_should_eat)
-			{
-				if (i == house->nphilos - 1)
-				{
-					house->is_full = 1;
-					return ;
-				}
-			}
+			if(finish_eating(house, i))
+				return ;
 			else
 				break;
-			i++;
 		}
-		
 	}
 }
-
-
 
 int	create_philos(t_house *house)
 {
