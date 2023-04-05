@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: albagarc <albagarc@student.42.fr>          +#+  +:+       +#+        */
+/*   By: codespace <codespace@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/09 15:39:28 by albagarc          #+#    #+#             */
-/*   Updated: 2023/04/04 18:21:50 by albagarc         ###   ########.fr       */
+/*   Updated: 2023/04/05 16:44:43 by codespace        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,6 @@ void	init_house(int argc, char **argv, t_house *house)
 	i = 0;
 	while(i < house->nphilos)
 	{
-		
 		house->philos[i].num = i + 1;
 		house->philos[i].left_fork_indx = i;
 		if (i == house->nphilos - 1)
@@ -56,21 +55,21 @@ void	init_house(int argc, char **argv, t_house *house)
 
 int main(int argc, char **argv)
 {
-
 	t_house	house;
 
 	if(argc == 5 || argc == 6)
 	{
-		error_control(argv);
+		if(error_control(argv))
+			terminate(ERR_ARG);
 		house.philos = malloc(sizeof(t_philo) * ft_atoi(argv[1]));
+		if(!house.philos)
+			terminate(ERR_MEM);
 		init_house(argc, argv, &house);
 		create_philos(&house);
 		ft_free_destroy(&house);
 	}
 	else
-	{
 		terminate(ERR_NARG);
-	}
-	system("leaks philo");
+	// system("leaks philo");
 }
 

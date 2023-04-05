@@ -1,21 +1,23 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   utilslibft.c                                       :+:      :+:    :+:   */
+/*   utils_libft.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: codespace <codespace@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/27 11:21:40 by codespace         #+#    #+#             */
-/*   Updated: 2023/03/27 11:24:00 by codespace        ###   ########.fr       */
+/*   Updated: 2023/04/05 16:18:27 by codespace        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <unistd.h>
+#include <limits.h>
+#include "errors.h"
 
 int	ft_atoi(const char *str)
 {
-	int	result;
-	int	sign;
+	long	result;
+	int		sign;
 
 	result = 0;
 	sign = 1;
@@ -32,6 +34,8 @@ int	ft_atoi(const char *str)
 		result = (result * 10) + (*str - '0');
 		str++;
 	}
+	if(result > INT_MAX || result < INT_MIN)
+		terminate(ERR_INT);
 	return (result * sign);
 }
 

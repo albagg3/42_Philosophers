@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   errors.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: albagarc <albagarc@student.42.fr>          +#+  +:+       +#+        */
+/*   By: codespace <codespace@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/13 21:39:53 by albagarc          #+#    #+#             */
-/*   Updated: 2023/04/04 16:49:26 by albagarc         ###   ########.fr       */
+/*   Updated: 2023/04/05 16:40:23 by codespace        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@
 void	terminate(char *s)
 {
 	ft_putendl_fd(s,2);
-//	exit(1);
+	exit(1);
 }
 
 int     ft_isalpha(int c)
@@ -28,7 +28,7 @@ int     ft_isalpha(int c)
         return (0);
 }
 
-void	check_is_number(char *arg)
+int	check_is_number(char *arg)
 {
 	int i;
 
@@ -37,14 +37,14 @@ void	check_is_number(char *arg)
 	{
 		if(ft_isalpha(arg[i]))
 		{
-			printf("se va por aqui");
-			terminate(ERR_ARG);
+			return(1);
 		}
 		i++;
 	}
+	return (0);
 }
 
-void	error_control(char **argv)
+int	error_control(char **argv)
 {
 	int i;
 
@@ -57,9 +57,9 @@ void	error_control(char **argv)
 			i++;
 		else
 		{
-			terminate(ERR_ARG);
-			exit(1);
+			return (1);
 		}
 	}
+	return(0);
 }
 
