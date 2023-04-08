@@ -6,7 +6,7 @@
 /*   By: codespace <codespace@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/09 15:39:28 by albagarc          #+#    #+#             */
-/*   Updated: 2023/04/05 16:44:43 by codespace        ###   ########.fr       */
+/*   Updated: 2023/04/08 14:31:22 by codespace        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@
 
 void	init_house(int argc, char **argv, t_house *house)
 {
-	int i;
+	int	i;
 
 	house->nphilos = ft_atoi(argv[1]);
 	house->time_to_die = ft_atoi(argv[2]);
@@ -34,10 +34,10 @@ void	init_house(int argc, char **argv, t_house *house)
 	house->time_to_sleep = ft_atoi(argv[4]);
 	house->is_alive = 1;
 	house->is_full = 0;
-	if(argc == 6)
+	if (argc == 6)
 		house->times_should_eat = ft_atoi(argv[5]);
 	i = 0;
-	while(i < house->nphilos)
+	while (i < house->nphilos)
 	{
 		house->philos[i].num = i + 1;
 		house->philos[i].left_fork_indx = i;
@@ -53,18 +53,17 @@ void	init_house(int argc, char **argv, t_house *house)
 }
 
 
-int main(int argc, char **argv)
+int	main(int argc, char **argv)
 {
 	t_house	house;
 
-	if(argc == 5 || argc == 6)
+	if (argc == 5 || argc == 6)
 	{
-		if(error_control(argv))
+		if (error_control(argv))
 			terminate(ERR_ARG);
 		house.philos = malloc(sizeof(t_philo) * ft_atoi(argv[1]));
-		if(!house.philos)
+		if (!house.philos)
 			terminate(ERR_MEM);
-		init_house(argc, argv, &house);
 		create_philos(&house);
 		ft_free_destroy(&house);
 	}
@@ -72,4 +71,3 @@ int main(int argc, char **argv)
 		terminate(ERR_NARG);
 	// system("leaks philo");
 }
-

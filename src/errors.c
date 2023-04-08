@@ -6,7 +6,7 @@
 /*   By: codespace <codespace@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/13 21:39:53 by albagarc          #+#    #+#             */
-/*   Updated: 2023/04/05 16:40:23 by codespace        ###   ########.fr       */
+/*   Updated: 2023/04/08 14:31:15 by codespace        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,23 +21,23 @@ void	terminate(char *s)
 	exit(1);
 }
 
-int     ft_isalpha(int c)
+int	ft_isalpha(int c)
 {
-        if ((c >= 'a' && c <= 'z') || (c >= 'A' && c <= 'Z'))
-                return (1);
-        return (0);
+    if ((c >= 'a' && c <= 'z') || (c >= 'A' && c <= 'Z'))
+        return (1);
+    return (0);
 }
 
 int	check_is_number(char *arg)
 {
-	int i;
+	int	i;
 
 	i = 0;
-	while(arg[i])
+	while (arg[i])
 	{
-		if(ft_isalpha(arg[i]))
+		if (ft_isalpha(arg[i]))
 		{
-			return(1);
+			return (1);
 		}
 		i++;
 	}
@@ -46,20 +46,19 @@ int	check_is_number(char *arg)
 
 int	error_control(char **argv)
 {
-	int i;
+	int	i;
 
 	i = 1;
 
-	while(argv[i])
+	while (argv[i])
 	{
 		check_is_number(argv[i]);
-		if(ft_atoi(argv[i]) && ft_atoi(argv[i]) > 0)
+		if (ft_atoi(argv[i]) && ft_atoi(argv[i]) > 0)
 			i++;
 		else
 		{
 			return (1);
 		}
 	}
-	return(0);
+	return (0);
 }
-

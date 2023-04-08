@@ -6,7 +6,7 @@
 /*   By: codespace <codespace@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/27 11:21:40 by codespace         #+#    #+#             */
-/*   Updated: 2023/04/05 16:18:27 by codespace        ###   ########.fr       */
+/*   Updated: 2023/04/08 14:34:50 by codespace        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,11 +34,10 @@ int	ft_atoi(const char *str)
 		result = (result * 10) + (*str - '0');
 		str++;
 	}
-	if(result > INT_MAX || result < INT_MIN)
+	if (result > INT_MAX || result < INT_MIN)
 		terminate(ERR_INT);
 	return (result * sign);
 }
-
 
 void    ft_putchar_fd(char c, int fd)
 {
