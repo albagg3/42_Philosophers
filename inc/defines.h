@@ -6,14 +6,14 @@
 /*   By: albagarc <albagarc@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/13 21:29:43 by albagarc          #+#    #+#             */
-/*   Updated: 2023/04/04 18:12:25 by albagarc         ###   ########.fr       */
+/*   Updated: 2023/04/10 13:25:24 by albagarc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <pthread.h>
-
 #ifndef DEFINES_H
 # define DEFINES_H
+
+# include <pthread.h>
 
 typedef struct s_philo{
 	int				num;
@@ -35,11 +35,11 @@ typedef struct s_house{
 	long long		start_time;
 	int				is_alive;
 	int				is_full;
-	pthread_mutex_t print_sth;
-	pthread_mutex_t block_is_alive;
+	pthread_mutex_t	print_sth;
+	pthread_mutex_t	block_is_alive;
 }	t_house;
 
-enum action
+enum e_action
 {
 	FORK,
 	EAT,
@@ -47,6 +47,5 @@ enum action
 	SLEEP,
 	DIE
 };
-
 
 #endif

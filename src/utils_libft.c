@@ -6,7 +6,7 @@
 /*   By: codespace <codespace@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/27 11:21:40 by codespace         #+#    #+#             */
-/*   Updated: 2023/04/08 14:34:50 by codespace        ###   ########.fr       */
+/*   Updated: 2023/04/10 13:15:14 by albagarc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,9 +39,9 @@ int	ft_atoi(const char *str)
 	return (result * sign);
 }
 
-void    ft_putchar_fd(char c, int fd)
+void	ft_putchar_fd(char c, int fd)
 {
-        write(fd, &c, 1);
+	write(fd, &c, 1);
 }
 
 void	ft_putendl_fd(char *s, int fd)

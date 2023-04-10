@@ -6,7 +6,7 @@
 /*   By: albagarc <albagarc@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/10 12:51:24 by albagarc          #+#    #+#             */
-/*   Updated: 2023/04/10 12:59:19 by albagarc         ###   ########.fr       */
+/*   Updated: 2023/04/10 13:23:22 by albagarc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,37 +34,31 @@ void	philo_eat(t_philo *philo)
 	pthread_mutex_unlock(&philo->house->philos[philo->right_fork_indx].fork);
 }
 
-void    print_info(t_philo *philo, enum action ac)
+void	print_info(t_philo *philo, enum e_action ac)
 {
+	long long	current_time;
+	long long	print_time;
 
-    long long   current_time;
-    long long   print_time;
-
-    current_time = gettime();
-    pthread_mutex_lock(&philo->house->print_sth);
-    print_time = passed_time(current_time, philo->house->start_time);
-    if (philo->house->is_alive && !philo->house->is_full )
-    {
-        if (ac == FORK)
-        {
-            printf("\033[1;39m%06lld\033[0;39m \033[1;30mphilo[%d] \x1b[0;33mhas taken a fork\n", print_time, philo->num);
-        }
-        if (ac == EAT)
-        {
-            printf("\033[1;39m%06lld\033[0;39m \033[1;30mphilo[%d] \033[0;38;5;208mis eating\n", print_time, philo->num);
-        }
-        if (ac == THINK)
-        {
-            printf("\033[1;39m%06lld\033[0;39m \033[1;30mphilo[%d] \033[0;96mis thinking\n", print_time, philo->num);
-        }
-        if (ac == SLEEP)
-        {
-            printf("\033[1;39m%06lld\033[0;39m \033[1;30mphilo[%d] \033[0;38;5;225mis sleeping\n", print_time, philo->num);
-        }
-        if (ac == DIE)
-        {
-            printf("\033[1;39m%06lld\033[0;39m \033[1;30mphilo[%d] \x1b[35mdied\n", print_time, philo->num);
-        }
-    }
+	current_time = gettime();
+	pthread_mutex_lock(&philo->house->print_sth);
+	print_time = passed_time(current_time, philo->house->start_time);
+	if (philo->house->is_alive && !philo->house->is_full)
+	{
+		if (ac == FORK)
+			printf("\033[1;39m%06lld\033[0;39m \033[1;30mphilo[%d] \
+			  	\x1b[0;33mhas taken a fork\n", print_time, philo->num);
+		if (ac == EAT)
+			printf("\033[1;39m%06lld\033[0;39m \033[1;30mphilo[%d] \
+				\033[0;38;5;208mis eating\n", print_time, philo->num);
+		if (ac == THINK)
+			printf("\033[1;39m%06lld\033[0;39m \033[1;30mphilo[%d] \
+			   	\033[0;96mis thinking\n", print_time, philo->num);
+		if (ac == SLEEP)
+			printf("\033[1;39m%06lld\033[0;39m \033[1;30mphilo[%d] \
+			   	\033[0;38;5;225mis sleeping\n", print_time, philo->num);
+		if (ac == DIE)
+			printf("\033[1;39m%06lld\033[0;39m \033[1;30mphilo[%d] \
+			  	\x1b[35mdied\n", print_time, philo->num);
+	}
 	pthread_mutex_unlock(&philo->house->print_sth);
 }
