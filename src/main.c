@@ -3,13 +3,12 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: codespace <codespace@student.42.fr>        +#+  +:+       +#+        */
+/*   By: albagarc <albagarc@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/09 15:39:28 by albagarc          #+#    #+#             */
-/*   Updated: 2023/04/08 14:31:22 by codespace        ###   ########.fr       */
+/*   Updated: 2023/04/10 13:07:17 by albagarc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
-
 
 #include <stdio.h>
 #include <unistd.h>
@@ -52,7 +51,6 @@ void	init_house(int argc, char **argv, t_house *house)
 	}
 }
 
-
 int	main(int argc, char **argv)
 {
 	t_house	house;
@@ -64,10 +62,12 @@ int	main(int argc, char **argv)
 		house.philos = malloc(sizeof(t_philo) * ft_atoi(argv[1]));
 		if (!house.philos)
 			terminate(ERR_MEM);
+		init_house(argc, argv, &house);
 		create_philos(&house);
 		ft_free_destroy(&house);
 	}
 	else
 		terminate(ERR_NARG);
-	// system("leaks philo");
 }
+
+	// system("leaks philo");

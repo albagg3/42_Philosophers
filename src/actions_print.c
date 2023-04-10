@@ -1,42 +1,42 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   utils.c                                            :+:      :+:    :+:   */
+/*   actions_print.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: albagarc <albagarc@student.42.fr>          +#+  +:+       +#+        */
+/*   By: albagarc <albagarc@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/03/28 15:05:35 by codespace         #+#    #+#             */
-/*   Updated: 2023/04/10 13:04:50 by albagarc         ###   ########.fr       */
+/*   Created: 2023/04/10 12:51:24 by albagarc          #+#    #+#             */
+/*   Updated: 2023/04/10 12:59:19 by albagarc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <sys/time.h>
-#include <stdio.h>
 #include "../inc/defines.h"
-#include <unistd.h>
-#include <stdlib.h>
+#include "../inc/utils.h"
+#include <stdio.h>
 
-long long   gettime()
+void	philo_sleep(t_philo *philo)
 {
-    struct timeval  tv;
-    long long       milisec;
-    
-    gettimeofday(&tv, NULL);
-    milisec = tv.tv_sec * 1000 + tv.tv_usec / 1000;
-    return (milisec);
+	print_info(philo, SLEEP);
+	ft_usleep(philo->house->time_to_sleep);
 }
 
-long long passed_time(long long current_time, long long last_time)
+void	philo_eat(t_philo *philo)
 {
-    long long   result;
-    
-    result = current_time - last_time;
-    return (result);
+	pthread_mutex_lock(&philo->house->philos[philo->left_fork_indx].fork);
+	print_info(philo, FORK);
+	pthread_mutex_lock(&philo->house->philos[philo->right_fork_indx].fork);
+	print_info(philo, FORK);
+	philo->last_eat = gettime();
+	philo->times_ate++;
+	print_info(philo, EAT);
+	ft_usleep(philo->house->time_to_eat);
+	pthread_mutex_unlock(&philo->house->philos[philo->left_fork_indx].fork);
+	pthread_mutex_unlock(&philo->house->philos[philo->right_fork_indx].fork);
 }
 
-/*void    print_info(t_philo *philo, enum action ac)
+void    print_info(t_philo *philo, enum action ac)
 {
-    
+
     long long   current_time;
     long long   print_time;
 
@@ -66,33 +66,5 @@ long long passed_time(long long current_time, long long last_time)
             printf("\033[1;39m%06lld\033[0;39m \033[1;30mphilo[%d] \x1b[35mdied\n", print_time, philo->num);
         }
     }
-	pthread_mutex_unlock(&philo->house->print_sth);  
-}*/
-
-void    ft_usleep(long long time)
-{
-    long long   current;
-    
-    current = gettime();
-    while (1)
-    {
-        if (passed_time(gettime(), current) >= time)
-            break;
-        usleep(100);
-    }
-}
-
-void    ft_free_destroy(t_house *house)
-{
-    int i;
-
-    i = 0;
-    while (i < house->nphilos)
-    {
-        pthread_mutex_destroy(&house->philos[i].fork);
-        i++;
-    }
-    free(house->philos);
-    pthread_mutex_destroy(&house->print_sth);
-    pthread_mutex_destroy(&house->block_is_alive);
+	pthread_mutex_unlock(&philo->house->print_sth);
 }
