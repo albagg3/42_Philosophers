@@ -1,4 +1,4 @@
-NAME = philo
+NAME = philo_bonus
 CC = gcc
 CFLAGS = -Wall -Wextra -Werror -g -pthread
 INC_DIR = inc
@@ -7,7 +7,7 @@ SRC_DIR = src/
 
 # FSANITIZE	:= -fsanitize=address -g3
 
-SRC_FILES	= main errors utils_libft utils philos_live actions_print
+SRC_FILES	= main_bonus errors_bonus utils_libft_bonus utils_bonus philos_live_bonus actions_print_bonus
 
 SRC 		= 	$(addprefix $(SRC_DIR), $(addsuffix .c, $(SRC_FILES)))
 OBJ 		= 	$(addprefix $(OBJ_DIR), $(addsuffix .o, $(SRC_FILES)))
