@@ -6,7 +6,7 @@
 /*   By: albagarc <albagarc@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/13 21:29:43 by albagarc          #+#    #+#             */
-/*   Updated: 2023/04/10 13:25:24 by albagarc         ###   ########.fr       */
+/*   Updated: 2023/04/10 15:36:53 by albagarc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,5 +47,13 @@ enum e_action
 	SLEEP,
 	DIE
 };
+
+# define  W "\033[1;39m"
+# define  G "\033[1;30m"
+# define  Y "\x1b[0;33m"
+# define  O "\033[0;38;5;208m"
+# define  LP "\033[0;38;5;225m"
+# define  B "\033[0;96m"
+# define  P "\x1b[0;35m"
 
 #endif

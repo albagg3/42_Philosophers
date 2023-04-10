@@ -6,7 +6,7 @@
 /*   By: albagarc <albagarc@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/31 11:53:53 by albagarc          #+#    #+#             */
-/*   Updated: 2023/04/10 14:07:23 by albagarc         ###   ########.fr       */
+/*   Updated: 2023/04/10 17:36:18 by albagarc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,13 +35,18 @@ void	*start_living(void *arg)
 
 int	finish_eating(t_house *house, int i)
 {
-	if (house->philos[i].times_ate >= house->times_should_eat)
+	while (house->times_should_eat && i--)
 	{
-		if (i == house->nphilos - 1)
+		if (house->philos[i].times_ate >= house->times_should_eat)
 		{
-			house->is_full = 1;
-			return (1);
+			if (i == 0)
+			{
+				house->is_full = 1;
+				return (1);
+			}
 		}
+		else
+			break ;
 	}
 	return (0);
 }
@@ -56,25 +61,17 @@ void	is_anyone_dead(t_house *house)
 		while (++i < house->nphilos)
 		{
 			pthread_mutex_lock(&house->block_is_alive);
-			
 			if (passed_time(gettime(), house->philos[i].last_eat) \
 				>= house->time_to_die)
 			{
-				printf("muere %lld\n", house->philos[i].last_eat);
-				print_info(house->philos, DIE);
+				print_info(&house->philos[i], DIE);
 				house->is_alive = 0;
-				// pthread_mutex_unlock(&house->block_is_alive);
 				return ;
 			}
 			pthread_mutex_unlock(&house->block_is_alive);
 		}
-		while (house->times_should_eat && --i)
-		{
-			if (finish_eating(house, i))
-				return ;
-			else
-				break ;
-		}
+		if (finish_eating(house, i))
+			return ;
 	}
 }
 

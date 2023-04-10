@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   actions_print.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: albagarc <albagarc@student.42barcel>       +#+  +:+       +#+        */
+/*   By: albagarc <albagarc@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/10 12:51:24 by albagarc          #+#    #+#             */
-/*   Updated: 2023/04/10 13:23:22 by albagarc         ###   ########.fr       */
+/*   Updated: 2023/04/10 15:35:07 by albagarc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,20 +45,20 @@ void	print_info(t_philo *philo, enum e_action ac)
 	if (philo->house->is_alive && !philo->house->is_full)
 	{
 		if (ac == FORK)
-			printf("\033[1;39m%06lld\033[0;39m \033[1;30mphilo[%d] \
-			  	\x1b[0;33mhas taken a fork\n", print_time, philo->num);
+			printf("%s%06lld %sphilo[%d] %shas taken a fork\n", W, print_time, \
+				G, philo->num, Y);
 		if (ac == EAT)
-			printf("\033[1;39m%06lld\033[0;39m \033[1;30mphilo[%d] \
-				\033[0;38;5;208mis eating\n", print_time, philo->num);
+			printf("%s%06lld %sphilo[%d] %sis eating\n", W, print_time, \
+				G, philo->num, O);
 		if (ac == THINK)
-			printf("\033[1;39m%06lld\033[0;39m \033[1;30mphilo[%d] \
-			   	\033[0;96mis thinking\n", print_time, philo->num);
+			printf("%s%06lld %sphilo[%d] %sis thinking\n", W, print_time, \
+				G, philo->num, B);
 		if (ac == SLEEP)
-			printf("\033[1;39m%06lld\033[0;39m \033[1;30mphilo[%d] \
-			   	\033[0;38;5;225mis sleeping\n", print_time, philo->num);
+			printf("%s%06lld %sphilo[%d] %sis sleeping\n", W, print_time, \
+				G, philo->num, LP);
 		if (ac == DIE)
-			printf("\033[1;39m%06lld\033[0;39m \033[1;30mphilo[%d] \
-			  	\x1b[35mdied\n", print_time, philo->num);
+			printf("%s%06lld %sphilo[%d] %sdied\n", W, print_time, \
+				G, philo->num, P);
 	}
 	pthread_mutex_unlock(&philo->house->print_sth);
 }
