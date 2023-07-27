@@ -6,7 +6,7 @@
 /*   By: albagarc <albagarc@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/10 12:51:24 by albagarc          #+#    #+#             */
-/*   Updated: 2023/04/10 15:35:07 by albagarc         ###   ########.fr       */
+/*   Updated: 2023/07/27 11:41:00 by albagarc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,8 +27,10 @@ void	philo_eat(t_philo *philo)
 	pthread_mutex_lock(&philo->house->philos[philo->right_fork_indx].fork);
 	print_info(philo, FORK);
 	philo->last_eat = gettime();
+	pthread_mutex_lock(&philo->house->block_is_alive);
 	philo->times_ate++;
 	print_info(philo, EAT);
+	pthread_mutex_unlock(&philo->house->block_is_alive);
 	ft_usleep(philo->house->time_to_eat);
 	pthread_mutex_unlock(&philo->house->philos[philo->left_fork_indx].fork);
 	pthread_mutex_unlock(&philo->house->philos[philo->right_fork_indx].fork);

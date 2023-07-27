@@ -6,7 +6,7 @@
 /*   By: albagarc <albagarc@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/31 11:53:53 by albagarc          #+#    #+#             */
-/*   Updated: 2023/07/06 12:44:55 by albagarc         ###   ########.fr       */
+/*   Updated: 2023/07/27 11:39:43 by albagarc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,9 +26,7 @@ void	*start_living(void *arg)
 		usleep(1500);
 	while (philo->house->is_alive && !philo->house->is_full)
 	{
-		pthread_mutex_lock(&philo->house->block_is_alive);
 		philo_eat(philo);
-		pthread_mutex_unlock(&philo->house->block_is_alive);
 		philo_sleep(philo);
 		print_info(philo, THINK);
 	}
